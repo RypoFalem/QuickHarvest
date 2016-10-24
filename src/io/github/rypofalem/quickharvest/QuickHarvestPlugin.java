@@ -27,7 +27,7 @@ public class QuickHarvestPlugin extends JavaPlugin implements Listener{
 		this.getServer().getPluginManager().registerEvents(this, this);
 	}
 	
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false) // recieves even cancelled events, lets the block break event decide
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onRightClickBlock(PlayerInteractEvent event){
 		if(event.getHand() == EquipmentSlot.HAND) return;
 		if(event.getAction() != Action.RIGHT_CLICK_BLOCK)return;
