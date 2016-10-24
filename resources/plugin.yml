@@ -1,0 +1,10 @@
+name: QuickHarvest
+main: io.github.rypofalem.quickharvest.QuickHarvestPlugin
+version: 1.0
+website: rypofalem.github.io
+author: RypoFalem
+description: Right click fully grown crops to harvest and replant at once.
+permissions:
+  quickharvest.use:
+    description: Can use quick harvest
+    default: true
