@@ -19,52 +19,35 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class QuickHarvestPlugin extends JavaPlugin implements Listener{
-	
-	boolean grabNextEvent = false;
-	Material seedWatch = null;
-	Location cropLocation = null;
+
 	public void onEnable(){
 		this.getServer().getPluginManager().registerEvents(this, this);
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onRightClickBlock(PlayerInteractEvent event){
-		if(event.getHand() == EquipmentSlot.HAND) return;
+		if(event.getHand() == EquipmentSlot.OFF_HAND) return;
 		if(event.getAction() != Action.RIGHT_CLICK_BLOCK)return;
 		if(!event.hasBlock()) return;
 		Block block = event.getClickedBlock();
 		Crop crop = Crop.getCropFromBlock(block.getType());
 		if(crop == null) return;
 		if(block.getData() != crop.getBlockData()) return;
+		if(crop.getSeed() != event.getPlayer().getEquipment().getItemInMainHand().getType()) return;
+
 		
 		Player player = event.getPlayer();
 		BlockState state = block.getState();
 		state.setRawData((byte)0);
 		ItemStack inHand = new ItemStack(crop.getSeed(), 1);
-		BlockPlaceEvent blockPlaceEvent = new BlockPlaceEvent(block, state, null, inHand, player, true, EquipmentSlot.OFF_HAND);
+		BlockPlaceEvent blockPlaceEvent = new BlockPlaceEvent(block, state, null, inHand, player, true, EquipmentSlot.HAND);
 		Bukkit.getServer().getPluginManager().callEvent(blockPlaceEvent);
 		if(blockPlaceEvent.isCancelled()) return;
-		
-		grabNextEvent = true;
-		seedWatch = crop.getSeed();
-		cropLocation = block.getLocation();
+
+		inHand = player.getEquipment().getItemInMainHand();
+		inHand.setAmount(inHand.getAmount() - 1);
 		block.breakNaturally(); //triggers onItemSpawn
 		block.setType(crop.getBlock());
 		block.setData((byte)0);
-	}
-	
-	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public void onItemSpawn(ItemSpawnEvent event){
-		if(!grabNextEvent) return;
-		Item itemEntity = (Item)event.getEntity();
-		ItemStack itemStack = itemEntity.getItemStack();
-		if(itemStack.getType() != seedWatch) return;
-		grabNextEvent = false;
-		if(itemStack.getAmount() > 1){
-			itemStack.setAmount(itemStack.getAmount() -1);
-		}else{
-			itemEntity.remove();
-			event.setCancelled(true);
-		}
 	}
 }
