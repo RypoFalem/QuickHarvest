@@ -4,6 +4,7 @@ version: 1.0
 website: rypofalem.github.io
 author: RypoFalem
 description: Right click fully grown crops to harvest and replant at once.
+softdepend: [Custom]
 permissions:
   quickharvest.use:
     description: Can use quick harvest

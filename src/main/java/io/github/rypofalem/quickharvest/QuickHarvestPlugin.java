@@ -1,18 +1,16 @@
 package io.github.rypofalem.quickharvest;
 
+import com.winthier.custom.CustomPlugin;
+import com.winthier.custom.item.CustomItem;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -33,18 +31,18 @@ public class QuickHarvestPlugin extends JavaPlugin implements Listener{
 		Crop crop = Crop.getCropFromBlock(block.getType());
 		if(crop == null) return;
 		if(block.getData() != crop.getBlockData()) return;
-		if(crop.getSeed() != event.getPlayer().getEquipment().getItemInMainHand().getType()) return;
-
-		
 		Player player = event.getPlayer();
+		ItemStack inHand = player.getEquipment().getItemInMainHand();
+		if(crop.getSeed() != event.getPlayer().getEquipment().getItemInMainHand().getType()) return;
+		if(CustomPlugin.getInstance() != null && CustomPlugin.getInstance().getItemManager().getCustomItem(inHand) != null) return;
+
+
 		BlockState state = block.getState();
 		state.setRawData((byte)0);
-		ItemStack inHand = new ItemStack(crop.getSeed(), 1);
 		BlockPlaceEvent blockPlaceEvent = new BlockPlaceEvent(block, state, null, inHand, player, true, EquipmentSlot.HAND);
 		Bukkit.getServer().getPluginManager().callEvent(blockPlaceEvent);
 		if(blockPlaceEvent.isCancelled()) return;
 
-		inHand = player.getEquipment().getItemInMainHand();
 		inHand.setAmount(inHand.getAmount() - 1);
 		block.breakNaturally(); //triggers onItemSpawn
 		block.setType(crop.getBlock());
