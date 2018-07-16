@@ -18,8 +18,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class QuickHarvestPlugin extends JavaPlugin implements Listener{
 
+
 	public void onEnable(){
 		this.getServer().getPluginManager().registerEvents(this, this);
+
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -34,7 +36,10 @@ public class QuickHarvestPlugin extends JavaPlugin implements Listener{
 		Player player = event.getPlayer();
 		ItemStack inHand = player.getEquipment().getItemInMainHand();
 		if(crop.getSeed() != event.getPlayer().getEquipment().getItemInMainHand().getType()) return;
-		if(CustomPlugin.getInstance() != null && CustomPlugin.getInstance().getItemManager().getCustomItem(inHand) != null) return;
+		if(Bukkit.getPluginManager().isPluginEnabled("Custom")
+				&& CustomPlugin.getInstance().getItemManager().getCustomItem(inHand) != null)
+			return;
+
 
 
 		BlockState state = block.getState();

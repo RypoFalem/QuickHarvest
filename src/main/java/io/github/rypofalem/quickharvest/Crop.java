@@ -3,11 +3,11 @@ package io.github.rypofalem.quickharvest;
 import org.bukkit.Material;
 
 public enum Crop {
-	WHEAT(Material.CROPS, Material.SEEDS, (byte)7, (byte)0), 
-	CARROT(Material.CARROT, Material.CARROT_ITEM, (byte)7, (byte)0), 
-	POTATO(Material.POTATO, Material.POTATO_ITEM, (byte)7, (byte)0),
-	NETHERWART(Material.NETHER_WARTS, Material.NETHER_STALK, (byte)3, (byte)0),
-	BEAT(Material.BEETROOT_BLOCK, Material.BEETROOT_SEEDS, (byte)3, (byte)0);
+	WHEAT(Material.WHEAT, Material.WHEAT_SEEDS, (byte)7, (byte)0),
+	CARROT(Material.CARROTS, Material.CARROT, (byte)7, (byte)0),
+	POTATO(Material.POTATOES, Material.POTATO, (byte)7, (byte)0),
+	NETHERWART(Material.NETHER_WART_BLOCK, Material.NETHER_WART, (byte)3, (byte)0),
+	BEAT(Material.BEETROOTS, Material.BEETROOT_SEEDS, (byte)3, (byte)0);
 	
 	private final Material block; //the material of the fully grown version of crop
 	private final Material seed;
