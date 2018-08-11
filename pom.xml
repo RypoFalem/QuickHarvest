@@ -17,6 +17,18 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
+        <repository>
+            <id>cavetale-repo</id>
+            <url>https://cavetale.com/jenkins/plugin/repository/everything/</url>
+        </repository>
+        <repository>
+            <id>md_5-snapshots</id>
+            <url>https://repo.md-5.net/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>md_5-releases</id>
+            <url>https://repo.md-5.net/content/repositories/releases/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -24,14 +36,14 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.13-pre7-R0.1-SNAPSHOT</version>
+            <version>1.13-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <!--Winthier Custom Framework-->
         <dependency>
             <groupId>com.winthier.custom</groupId>
             <artifactId>custom</artifactId>
-            <version>0.1</version>
+            <version>0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <!--Lombok-->
@@ -39,6 +51,13 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.16.16</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--NoCheatPlus-->
+        <dependency>
+            <groupId>fr.neatmonster</groupId>
+            <artifactId>nocheatplus</artifactId>
+            <version>3.16.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
