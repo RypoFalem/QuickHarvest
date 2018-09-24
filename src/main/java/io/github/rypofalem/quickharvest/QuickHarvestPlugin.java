@@ -1,6 +1,7 @@
 package io.github.rypofalem.quickharvest;
 
 import com.winthier.custom.CustomPlugin;
+import com.winthier.generic_events.GenericEvents;
 import fr.neatmonster.nocheatplus.checks.CheckType;
 import fr.neatmonster.nocheatplus.hooks.NCPExemptionManager;
 import org.bukkit.Bukkit;
@@ -52,27 +53,29 @@ public class QuickHarvestPlugin extends JavaPlugin implements Listener{
 				&& CustomPlugin.getInstance().getItemManager().getCustomItem(inHand) != null)
 			return;
 
-		//ask other plugins if it's ok
 		BlockState state = block.getState();
 		ageable.setAge(0);
 		state.setBlockData(ageable);
-		boolean nCPEnabled = Bukkit.getPluginManager().isPluginEnabled("NoCheatPlus");
-		if(nCPEnabled) NCPExemptionManager.exemptPermanently(player, CheckType.BLOCKBREAK_NOSWING);
-		BlockBreakEvent blockBreakEvent = new BlockBreakEvent(block, player);
-		Bukkit.getServer().getPluginManager().callEvent(blockBreakEvent);
-		if(nCPEnabled) NCPExemptionManager.unexempt(player, CheckType.BLOCKBREAK_NOSWING);
-		if(blockBreakEvent.isCancelled()) return;
-
-		if(nCPEnabled) NCPExemptionManager.exemptPermanently(player, CheckType.BLOCKPLACE_NOSWING);
-		BlockPlaceEvent blockPlaceEvent = new BlockPlaceEvent(block, state, block.getRelative(BlockFace.DOWN), inHand, player, true, EquipmentSlot.HAND);
-		Bukkit.getServer().getPluginManager().callEvent(blockPlaceEvent);
-		if(nCPEnabled) NCPExemptionManager.unexempt(player, CheckType.BLOCKPLACE_NOSWING);
-		if(blockPlaceEvent.isCancelled()) return;
+//		boolean nCPEnabled = Bukkit.getPluginManager().isPluginEnabled("NoCheatPlus");
+//		if(nCPEnabled) NCPExemptionManager.exemptPermanently(player, CheckType.BLOCKBREAK_NOSWING);
+//		BlockBreakEvent blockBreakEvent = new BlockBreakEvent(block, player);
+//		Bukkit.getServer().getPluginManager().callEvent(blockBreakEvent);
+//		if(nCPEnabled) NCPExemptionManager.unexempt(player, CheckType.BLOCKBREAK_NOSWING);
+//		if(blockBreakEvent.isCancelled()) return;
+//
+//		if(nCPEnabled) NCPExemptionManager.exemptPermanently(player, CheckType.BLOCKPLACE_NOSWING);
+//		BlockPlaceEvent blockPlaceEvent = new BlockPlaceEvent(block, state, block.getRelative(BlockFace.DOWN), inHand, player, true, EquipmentSlot.HAND);
+//		Bukkit.getServer().getPluginManager().callEvent(blockPlaceEvent);
+//		if(nCPEnabled) NCPExemptionManager.unexempt(player, CheckType.BLOCKPLACE_NOSWING);
+//		if(blockPlaceEvent.isCancelled()) return;
 
 		//do the damn thing
-		inHand.setAmount(inHand.getAmount() - 1);
-		block.breakNaturally();
-		block.setType(crop.getBlock());
-		block.setBlockData(ageable);
+		if(GenericEvents.playerCanBuild(player, block)){
+			inHand.setAmount(inHand.getAmount() - 1);
+			block.breakNaturally();
+			block.setType(crop.getBlock());
+			block.setBlockData(ageable);
+		}
+
 	}
 }
