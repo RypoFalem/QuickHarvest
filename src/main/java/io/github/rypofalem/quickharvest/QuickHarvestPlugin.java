@@ -1,12 +1,7 @@
 package io.github.rypofalem.quickharvest;
 
-import com.winthier.custom.CustomPlugin;
 import com.winthier.generic_events.GenericEvents;
-import fr.neatmonster.nocheatplus.checks.CheckType;
-import fr.neatmonster.nocheatplus.hooks.NCPExemptionManager;
-import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.entity.Player;
@@ -14,8 +9,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -26,7 +19,6 @@ public class QuickHarvestPlugin extends JavaPlugin implements Listener{
 
 	public void onEnable(){
 		this.getServer().getPluginManager().registerEvents(this, this);
-
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -48,10 +40,6 @@ public class QuickHarvestPlugin extends JavaPlugin implements Listener{
 		Player player = event.getPlayer();
 		ItemStack inHand = player.getEquipment().getItemInMainHand();
 		if(crop.getSeed() != event.getPlayer().getEquipment().getItemInMainHand().getType()) return;
-		//quickharvest doesn't define behavior for custom items
-		if(Bukkit.getPluginManager().isPluginEnabled("Custom")
-				&& CustomPlugin.getInstance().getItemManager().getCustomItem(inHand) != null)
-			return;
 
 		BlockState state = block.getState();
 		ageable.setAge(0);
